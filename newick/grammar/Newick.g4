@@ -1,4 +1,4 @@
-grammar newick;
+grammar Newick;
 
 tree: node ';';
 node : label?                          // Leaf Node.
@@ -11,6 +11,6 @@ value : (INT | FLOAT);
 STR : [a-zA-Z0-9._#]*[a-zA-Z][a-zA-Z0-9._#]*;
 INT : [0-9]+;
 // allows to write float in "10e-3" format
-FLOAT : [0-9]+ '.' [0-9]+ ([Ee] [+-] [0-9]+)?; 
+FLOAT : [0-9]+ '.' [0-9]+ ([Ee] [+-] [0-9]+)?;
 
 WS : [ \t\r\n]+ -> skip;
