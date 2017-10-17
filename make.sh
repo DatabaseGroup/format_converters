@@ -9,6 +9,12 @@ GRAMMARS_TO_COMPILE=(\
   "-lib xml/grammar xml/grammar/XMLParser.g4"
 )
 
+INIT_DIRS=(\
+  bracket\
+  bracket/dot\
+  bracket/grammar\
+)
+
 # Java command.
 JAVA="java -jar"
 
@@ -19,6 +25,11 @@ ANTLR4_JAR="antlr-4.7-complete.jar"
 ANTLR4_PARAMS="-Dlanguage=Python3"
 
 # Compile all grammars.
-for g in "${GRAMMARS_TO_COMPILE[@]}" ; do
-  $JAVA $ANTLR4_JAR $ANTLR4_PARAMS $g ;
-done
+# for g in "${GRAMMARS_TO_COMPILE[@]}" ; do
+  # $JAVA $ANTLR4_JAR $ANTLR4_PARAMS $g ;
+# done
+
+# Generate empty python __init__.py files.
+# for id in "${INIT_DIRS[@]}" ; do
+#   touch $id/__init__.py ;
+# done
