@@ -25,10 +25,11 @@ SOFTWARE.
 
 import sys
 from antlr4 import *
-from BracketNotationLexer import BracketNotationLexer
-from BracketNotationParser import BracketNotationParser
+from bracket.grammar.BracketLexer import BracketLexer
+from bracket.grammar.BracketParser import BracketParser
+from bracket.grammar.BracketListener import BracketListener
 
-class BracketNotationListener(ParseTreeListener):
+class BracketNotationListener(BracketListener):
     node_id = 0             # used to store incremented preorder id of a node
     nodes_stack = []        # stores parent ids to be available at exit
     current_node_stack = [] # stores node ids to be available at exit

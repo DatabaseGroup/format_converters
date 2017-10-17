@@ -1,14 +1,14 @@
-# This python file can be used to convert the Newick notation to the bracket 
+# This python file can be used to convert the Newick notation to the bracket
 # notation.
 
 import argparse
 
 from antlr4 import *
-import newickLexer
-import newickParser
-import newickListener
+from newick.grammar.NewickLexer import NewickLexer
+from newick.grammar.NewickParser import NewickParser
+from newick.grammar.NewickListener import NewickListener
 
-class BracketNotationNewickParserListerner(newickListener.newickListener):
+class BracketNotationNewickParserListerner(NewickListener):
 
 
     # Creates a string self.n
@@ -18,7 +18,7 @@ class BracketNotationNewickParserListerner(newickListener.newickListener):
 
     # Called when Node is entered
     def enterNode(self, ctx):
-        
+
         self.n += '{'
 
         if ctx.label() != None:
@@ -34,15 +34,15 @@ class BracketNotationNewickParserListerner(newickListener.newickListener):
                     self.n += str(ctx.label().key().STR())
                 else:
                     self.n += ''
-    
+
             if ctx.label().value() != None:
-                
+
                 if ctx.label().value().INT() != None:
                     self.n += ':' + str(ctx.label().value().INT())
-        
+
                 elif ctx.label().value().FLOAT() != None:
                     self.n += ':' + str(ctx.label().value().FLOAT())
-                
+
                 else:
                     self.n += ''
         pass
@@ -100,15 +100,13 @@ def main():
     listener = BracketNotationNewickParserListerner()
 
   # Open a tree walker and associate our listener to be used while traversing
-  # the XML tree 
+  # the XML tree
     walker = ParseTreeWalker()
     walker.walk(listener, tree)
 
   # Print the string our BracketNotationXMLParserListener generate while walking
   # the XML tree to stdout
-    print listener.get_bracket_notation()
+    print(listener.get_bracket_notation())
 
 if __name__ == '__main__':
     main()
-
-    

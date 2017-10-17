@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 """
 The MIT License (MIT)
@@ -27,17 +27,17 @@ import sys
 import argparse
 
 from antlr4 import *
-import antlr_gen.XMLLexer
-import antlr_gen.XMLParser
-import antlr_gen.XMLParserListener
+from xml.grammar.XMLLexer import XMLLexer
+from xml.grammar.XMLParser import XMLParser
+from xml.grammar.XMLParserListener import XMLParserListener
 
 # This is our listener that is called while the XMLParser traverses the XML tree
 # It has one member 'bn' that
-#   - is built node-by-node during the parsing process, and 
+#   - is built node-by-node during the parsing process, and
 #   - represents the bracket notation of the XML tree once the parsing succeeds.
 # One can receive the bracket notation as string using the
 # 'get_bracket_notation' function.
-class BracketNotationXMLParserListener(antlr_gen.XMLParserListener.XMLParserListener):
+class BracketNotationXMLParserListener(XMLParserListener):
   # Constructor
   def __init__(self):
     # initialize empty string
@@ -51,7 +51,7 @@ class BracketNotationXMLParserListener(antlr_gen.XMLParserListener.XMLParserList
 
     # sort attributes by attribute names, always
     attributes = sorted(ctx.attribute(), key=lambda attribute: str(attribute.Name()))
-    
+
     if attributes:
       # traverse sorted attributes
       for attribute in attributes:
@@ -86,7 +86,7 @@ class BracketNotationXMLParserListener(antlr_gen.XMLParserListener.XMLParserList
   def enterChardata(self, ctx):
     # extract text data
     text = ctx.TEXT()
-    
+
     # only add text data to bracket notation representation if it is not empty,
     # i.e., whitespaces only
     if text:
@@ -119,13 +119,13 @@ def main(argv):
   listener = BracketNotationXMLParserListener()
 
   # Open a tree walker and associate our listener to be used while traversing
-  # the XML tree 
+  # the XML tree
   walker = ParseTreeWalker()
   walker.walk(listener, tree)
 
   # Print the string our BracketNotationXMLParserListener generate while walking
   # the XML tree to stdout
-  print listener.get_bracket_notation()
+  print(listener.get_bracket_notation())
 
 if __name__ == '__main__':
   main(sys.argv)
