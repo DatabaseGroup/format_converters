@@ -34,6 +34,12 @@ The following converters are currently available:
 - **Newick** to **Bracket**: [Newick format](http://evolution.genetics.washington.edu/phylip/newicktree.html) is used to represent phylogenetic trees in evolutional biology.
 - **Bracket** to **Dot**: Dot is a format to represent graphs used by [Graphviz](http://www.graphviz.org/).
 
+## Licence
+
+The source code is published under the MIT licence found in the root directory of the project and in the header of each source file.
+
+**TODO:** The XML grammars have a BSD licence. It that a problem?
+
 ## Building process
 
 Here we describe the general building process of our converters. Converter-specific execution details and examples are listed in the respective README files.
@@ -58,4 +64,18 @@ pip install antlr4-python3-runtime
 Execute the ``make.sh`` script to compile all grammars.
 ```
 ./make.sh
+```
+
+## Execution manual
+
+Execute ``python format_converters --help`` for help.
+
+## Using as a module in other projects.
+
+Lets assume you have a Python script in the parent directory to ``format_converters`` and you want to import the bracket-to-dot converter. Then, you can import it and use as follows.
+```python
+import format_converters.tree_formats.bracket.dot.converter as BDConverter
+
+source = "{a{b{d{f}}{e}}{c}}"
+print(BDConverter.convert(source))
 ```
