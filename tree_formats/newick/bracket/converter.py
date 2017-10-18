@@ -24,14 +24,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-import argparse
-
 from antlr4 import *
 from ..grammar.NewickLexer import NewickLexer
 from ..grammar.NewickParser import NewickParser
 from ..grammar.NewickListener import NewickListener
 
-class BracketNotationNewickParserListerner(NewickListener):
+class NewickBracketListerner(NewickListener):
 
 
     # Creates a string self.n
@@ -105,22 +103,15 @@ class BracketNotationNewickParserListerner(NewickListener):
         return self.n
 
 
-def main():
-  # Set up command-line argument parser and specify the XML file to parse as
-  # required command-line argument
-    parser = argparse.ArgumentParser()
-    parser.add_argument('newickfile')
-    args = parser.parse_args()
+def convert(source):
 
-  # Open given XML file and associated lexer/parser with it
-    input = FileStream(args.newickfile)
-    lexer = newickLexer.newickLexer(input)
+    lexer = NewickLexer(InputStream(source))
     stream = CommonTokenStream(lexer)
-    parser = newickParser.newickParser(stream)
+    parser = NewickParser(stream)
     tree = parser.tree()
 
   # Define our BracketNotationXMLParserListener
-    listener = BracketNotationNewickParserListerner()
+    listener = NewickBracketListerner()
 
   # Open a tree walker and associate our listener to be used while traversing
   # the XML tree
@@ -130,6 +121,3 @@ def main():
   # Print the string our BracketNotationXMLParserListener generate while walking
   # the XML tree to stdout
     print(listener.get_bracket_notation())
-
-if __name__ == '__main__':
-    main()

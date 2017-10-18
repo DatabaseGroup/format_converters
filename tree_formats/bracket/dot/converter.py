@@ -23,13 +23,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-import sys
 from antlr4 import *
 from ..grammar.BracketLexer import BracketLexer
 from ..grammar.BracketParser import BracketParser
 from ..grammar.BracketListener import BracketListener
 
-class BracketNotationListener(BracketListener):
+class BracketDotListener(BracketListener):
     node_id = 0             # used to store incremented preorder id of a node
     nodes_stack = []        # stores parent ids to be available at exit
     current_node_stack = [] # stores node ids to be available at exit
@@ -51,18 +50,17 @@ class BracketNotationListener(BracketListener):
             current_node = self.current_node_stack.pop()
             print(str(parent) + "->" + str(current_node))
 
-def main(argv):
+def convert(source):
+    # BUG: If error in parsing, partial output is printed.
+
     print("digraph G {\nnode [shape=none];\nedge [dir=none];") # dot preamble
 
-    lexer = BracketNotationLexer(InputStream(argv[1]))
+    lexer = BracketLexer(InputStream(source))
     stream = CommonTokenStream(lexer)
-    parser = BracketNotationParser(stream)
+    parser = BracketParser(stream)
     tree = parser.node()
-    listener = BracketNotationListener()
+    listener = BracketDotListener()
     walker = ParseTreeWalker()
     walker.walk(listener, tree)
 
     print("}") # dot final closing bracket
-
-if __name__ == '__main__':
-    main(sys.argv)
