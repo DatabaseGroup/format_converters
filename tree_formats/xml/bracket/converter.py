@@ -102,7 +102,7 @@ class XMLBracketParserListener(XMLParserListener):
     def get_bracket_notation(self):
         return self.bn
 
-def convert_to_string(source):
+def convert(source):
 
     lexer = XMLLexer(InputStream(source))
     stream = CommonTokenStream(lexer)
@@ -120,6 +120,3 @@ def convert_to_string(source):
     # Print the string our BracketNotationXMLParserListener generate while walking
     # the XML tree to stdout
     return listener.get_bracket_notation()
-
-def convert_to_print(source):
-    print(convert_to_string)

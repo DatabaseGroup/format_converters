@@ -120,4 +120,4 @@ def convert(source):
 
   # Print the string our BracketNotationXMLParserListener generate while walking
   # the XML tree to stdout
-    print(listener.get_bracket_notation())
+    return listener.get_bracket_notation()

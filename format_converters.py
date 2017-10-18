@@ -48,17 +48,19 @@ def main(argv):
     )
     args = parser.parse_args()
 
+    # BUG: If error in parsing, incorrect partial output is printed.
+
     if args.conversion_type == _BD:
-        BDConverter.convert(args.source)
+        print(BDConverter.convert(args.source))
 
     if args.conversion_type == _NB:
-        NBConverter.convert(args.source)
+        print(NBConverter.convert(args.source))
 
     if args.conversion_type == _XB:
-        XBConverter.convert_to_print(args.source)
+        print(XBConverter.convert(args.source))
 
     if args.conversion_type == _XD:
-        BDConverter.convert(XBConverter.convert_to_string(args.source))
+        print(BDConverter.convert(XBConverter.convert(args.source)))
 
 if __name__ == '__main__':
-  main(sys.argv)
+    main(sys.argv)

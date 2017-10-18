@@ -29,13 +29,17 @@ from ..grammar.BracketParser import BracketParser
 from ..grammar.BracketListener import BracketListener
 
 class BracketDotListener(BracketListener):
-    node_id = 0             # used to store incremented preorder id of a node
-    nodes_stack = []        # stores parent ids to be available at exit
-    current_node_stack = [] # stores node ids to be available at exit
+    # Constructor
+    def __init__(self):
+        # initialize empty string
+        self.bn = ''
+        self.node_id = 0             # used to store incremented preorder id of a node
+        self.nodes_stack = []        # stores parent ids to be available at exit
+        self.current_node_stack = [] # stores node ids to be available at exit
 
     def enterNode(self, ctx):
         current_node = self.node_id
-        print(str(current_node) + " [label=\"" + str(ctx.LABEL()) + "\"];")
+        self.bn += (str(current_node) + " [label=\"" + str(ctx.LABEL()) + "\"];\n")
         # push id of current node to be available at exit
         self.current_node_stack.append(current_node)
         # for each child push id of current node as their parent
@@ -48,12 +52,13 @@ class BracketDotListener(BracketListener):
         if len(self.nodes_stack) > 0: # root node has no parent
             parent = self.nodes_stack.pop()
             current_node = self.current_node_stack.pop()
-            print(str(parent) + "->" + str(current_node))
+            self.bn += (str(parent) + "->" + str(current_node) + "\n")
+
+    # Getter for the bracket notation string.
+    def get_dot_notation(self):
+        return self.bn
 
 def convert(source):
-    # BUG: If error in parsing, partial output is printed.
-
-    print("digraph G {\nnode [shape=none];\nedge [dir=none];") # dot preamble
 
     lexer = BracketLexer(InputStream(source))
     stream = CommonTokenStream(lexer)
@@ -63,4 +68,8 @@ def convert(source):
     walker = ParseTreeWalker()
     walker.walk(listener, tree)
 
-    print("}") # dot final closing bracket
+    output = "digraph G {\nnode [shape=none];\nedge [dir=none];" # dot preamble
+    output += listener.get_dot_notation()
+    output += "}" # dot final closing bracket
+
+    return output
