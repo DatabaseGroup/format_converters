@@ -27,9 +27,9 @@ import sys
 import argparse
 
 from antlr4 import *
-from xml.grammar.XMLLexer import XMLLexer
-from xml.grammar.XMLParser import XMLParser
-from xml.grammar.XMLParserListener import XMLParserListener
+from tree_formats.xml.grammar.XMLLexer import XMLLexer
+from tree_formats.xml.grammar.XMLParser import XMLParser
+from tree_formats.xml.grammar.XMLParserListener import XMLParserListener
 
 # This is our listener that is called while the XMLParser traverses the XML tree
 # It has one member 'bn' that

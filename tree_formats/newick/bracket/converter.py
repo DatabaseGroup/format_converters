@@ -4,9 +4,9 @@
 import argparse
 
 from antlr4 import *
-from newick.grammar.NewickLexer import NewickLexer
-from newick.grammar.NewickParser import NewickParser
-from newick.grammar.NewickListener import NewickListener
+from tree_formats.newick.grammar.NewickLexer import NewickLexer
+from tree_formats.newick.grammar.NewickParser import NewickParser
+from tree_formats.newick.grammar.NewickListener import NewickListener
 
 class BracketNotationNewickParserListerner(NewickListener):
 
