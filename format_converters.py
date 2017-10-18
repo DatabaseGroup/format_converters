@@ -31,6 +31,7 @@ def main(argv):
     _BD = 'bracket-dot'
     _NB = 'newick-bracket'
     _XB = 'xml-bracket'
+    _XD = 'xml-dot'
     parser = argparse.ArgumentParser(
         description='Format converter of the Database Research Group. \
                      Description can be found in README.md.')
@@ -42,7 +43,7 @@ def main(argv):
     parser.add_argument(
         'conversion_type',
         type=str,
-        choices=[_BD, _NB, _XB],
+        choices=[_BD, _NB, _XB, _XD],
         help='Conversion type.'
     )
     args = parser.parse_args()
@@ -54,7 +55,10 @@ def main(argv):
         NBConverter.convert(args.source)
 
     if args.conversion_type == _XB:
-        XBConverter.convert(args.source)
+        XBConverter.convert_to_print(args.source)
+
+    if args.conversion_type == _XD:
+        BDConverter.convert(XBConverter.convert_to_string(args.source))
 
 if __name__ == '__main__':
   main(sys.argv)

@@ -102,21 +102,24 @@ class XMLBracketParserListener(XMLParserListener):
     def get_bracket_notation(self):
         return self.bn
 
-def convert(source):
+def convert_to_string(source):
 
-      lexer = XMLLexer(InputStream(source))
-      stream = CommonTokenStream(lexer)
-      parser = XMLParser(stream)
-      tree = parser.document()
+    lexer = XMLLexer(InputStream(source))
+    stream = CommonTokenStream(lexer)
+    parser = XMLParser(stream)
+    tree = parser.document()
 
-      # Define our BracketNotationXMLParserListener
-      listener = XMLBracketParserListener()
+    # Define our BracketNotationXMLParserListener
+    listener = XMLBracketParserListener()
 
-      # Open a tree walker and associate our listener to be used while traversing
-      # the XML tree
-      walker = ParseTreeWalker()
-      walker.walk(listener, tree)
+    # Open a tree walker and associate our listener to be used while traversing
+    # the XML tree
+    walker = ParseTreeWalker()
+    walker.walk(listener, tree)
 
-      # Print the string our BracketNotationXMLParserListener generate while walking
-      # the XML tree to stdout
-      print(listener.get_bracket_notation())
+    # Print the string our BracketNotationXMLParserListener generate while walking
+    # the XML tree to stdout
+    return listener.get_bracket_notation()
+
+def convert_to_print(source):
+    print(convert_to_string)
