@@ -25,9 +25,9 @@ SOFTWARE.
 
 import sys
 from antlr4 import *
-from tree_formats.bracket.grammar.BracketLexer import BracketLexer
-from tree_formats.bracket.grammar.BracketParser import BracketParser
-from tree_formats.bracket.grammar.BracketListener import BracketListener
+from ..grammar.BracketLexer import BracketLexer
+from ..grammar.BracketParser import BracketParser
+from ..grammar.BracketListener import BracketListener
 
 class BracketNotationListener(BracketListener):
     node_id = 0             # used to store incremented preorder id of a node
