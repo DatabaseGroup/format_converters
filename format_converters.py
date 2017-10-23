@@ -46,6 +46,14 @@ def main(argv):
         choices=[_BD, _NB, _XB, _XD],
         help='Conversion type.'
     )
+    parser.add_argument(
+        '--xml-tokanization-type',
+        dest='xml_tokanization_type',
+        type=str,
+        choices=['content-long-strings', 'content-by-whitespace'],
+        help='Type of conversion from xml to nodes and labels (details in\
+              source code). Default: tags-long-strings.'
+    )
     args = parser.parse_args()
 
     # BUG: If error in parsing, incorrect partial output is printed.
@@ -57,10 +65,10 @@ def main(argv):
         print(NBConverter.convert(args.source))
 
     if args.conversion_type == _XB:
-        print(XBConverter.convert(args.source))
+        print(XBConverter.convert(args.source, args.xml_tokanization_type))
 
     if args.conversion_type == _XD:
-        print(BDConverter.convert(XBConverter.convert(args.source)))
+        print(BDConverter.convert(XBConverter.convert(args.source, args.xml_tokanization_type)))
 
 if __name__ == '__main__':
     main(sys.argv)

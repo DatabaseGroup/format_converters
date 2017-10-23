@@ -36,26 +36,26 @@ from ..grammar.XMLParserListener import XMLParserListener
 # 'get_bracket_notation' function.
 class XMLBracketParserListener(XMLParserListener):
     # Constructor
-    def __init__(self):
+    def __init__(self, tokanization):
         # initialize empty string
         self.bn = ''
+        self.tokanization = tokanization
 
     # Called whenever an element is entered, i.e., a tag is opened by
     # '<element-name>'.
     def enterElement(self, ctx):
-        # open a new node and its label
+        # Open a new tag-node with its name as its label.
         self.bn += '{' + str(ctx.Name()[0].getText())
-
-        # sort attributes by attribute names, always
+        # Sort attributes by their names.
         attributes = sorted(ctx.attribute(), key=lambda attribute: str(attribute.Name()))
-
         if attributes:
-            # traverse sorted attributes
+            # Traverse sorted attributes.
             for attribute in attributes:
-                # for each attribute pair, open a new node having the attribute name as
-                # label (attribute.Name()), and open another new node having the
-                # attribute value as label (attribute.STRING()[1:-1]).
-                # [1:-1] removes the "-prefix/-suffix from the returned string
+                # For each attribute-value pair, create two nodes in
+                # a parent-child relationship such that:
+                #   - parent's label is the attribute's name (attribute.Name()),
+                #   - child's label is the attribute's value (attribute.STRING()[1:-1]).
+                # NOTE: [1:-1] removes the "-prefix/-suffix from the returned string.
                 self.bn += '{' + str(attribute.Name()) + '{' + str(attribute.STRING())[1:-1] + '}}'
 
     # Called whenever an element is exited, i.e., a tag is closed by
@@ -81,17 +81,17 @@ class XMLBracketParserListener(XMLParserListener):
     # Called whenever character/text data is entered, i.e., in between a closing
     # and an opening tag, i.e., '<element-name>text-data</element-name>'
     def enterChardata(self, ctx):
-        # extract text data
+        # Extract text data.
         text = ctx.TEXT()
-
-        # only add text data to bracket notation representation if it is not empty,
-        # i.e., whitespaces only
-        # NOTE: Spaces are removed due to the current bracket notation grammar
-        #       and converter.
-        #       Later this can have another approach: Split long strings into
-        #       sibling nodes by spaces.
+        # Only add text data to bracket notation representation if it is a
+        # non-empty string (whitespaces only amke an empty string too).
         if text:
-            self.bn += '{' + str(text).replace(" ", "") + '}'
+            if self.tokanization == 'content-long-strings':
+                self.bn += '{' + str(text) + '}'
+            if self.tokanization == 'content-by-whitespace':
+                string_tokens = str(text).split()
+                string_tokens = "".join(["{%s}" % t for t in string_tokens])
+                self.bn += string_tokens
 
     # Called whenever character/text data is exited.
     def exitChardata(self, ctx):
@@ -102,7 +102,33 @@ class XMLBracketParserListener(XMLParserListener):
     def get_bracket_notation(self):
         return self.bn
 
-def convert(source):
+# We implement multiple ways of obtaining a tree structure from an XML file.
+# The differences lie in how we map XML elements (attributes, tags, and long
+# strings text data) to nodes and labels.
+#
+# Labels must follow the bracket notation grammar:
+#     tree_formats/bracket/grammar/Bracket.g4
+#
+# content-long-strings (default)
+#     Each tag is a node with tag's name as label.
+#     Each attribute is a direct child of its tag's node with label being
+#     attribute's name and a single child with the label being attribute's
+#     value.
+#     Each tag-node has a child with the label being tag's contents.
+#     Given a tag, its attribute-nodes and children-tag-nodes are siblings.
+#     Attribute-nodes are sorted by their name and come before tag-nodes.
+#     Sibling-tag-nodes are composed as present in the XML file (without
+#     further ordering).
+#
+# content-by-whitespace
+#     As tags-long-strings.
+#     Additionally, multi-words tag contents are split by whitespaces into
+#     multiple sibling nodes. No ordering is appied.
+#     IDEA: Unify the string tokens: upper/lower case, punctuations, ets.
+#     IDEA: Remove in titles.
+#     IDEA: Split the urls.
+#
+def convert(source, tokanization='content-long-strings'):
 
     lexer = XMLLexer(InputStream(source))
     stream = CommonTokenStream(lexer)
@@ -110,7 +136,7 @@ def convert(source):
     tree = parser.document()
 
     # Define our BracketNotationXMLParserListener
-    listener = XMLBracketParserListener()
+    listener = XMLBracketParserListener(tokanization)
 
     # Open a tree walker and associate our listener to be used while traversing
     # the XML tree
