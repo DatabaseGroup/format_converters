@@ -68,7 +68,7 @@ def convert(source):
     walker = ParseTreeWalker()
     walker.walk(listener, tree)
 
-    output = "digraph G {\nnode [shape=none];\nedge [dir=none];" # dot preamble
+    output = "digraph G {\nnode [shape=none];\nedge [dir=none];\n" # dot preamble
     output += listener.get_dot_notation()
     output += "}" # dot final closing bracket
 

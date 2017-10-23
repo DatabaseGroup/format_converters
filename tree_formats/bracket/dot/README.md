@@ -1,50 +1,27 @@
-# Converter of bracket notation to dot
+# Bracket notation to Graphviz dot
 
-Implements of a bracket notation parser using the
-[Python3 target](https://github.com/antlr/antlr4/blob/master/doc/python-target.md)
-of [ANTLR](http://www.antlr.org/). The parser is used to convert the input into a corresponding dot output.
+Parses bracket notation and converts to a Graphviz dot file.
 
-## Files
+Uses bracket notation grammar ``tree_formats/bracket/grammar/BracketNotation.g4``.
 
-`BracketNotation.g4` Contains a simple bracket notation grammar.
+## Prerequisites
 
-`bracket-to-dot.py` Takes tree in bracket notation from stdin and outputs the corresponding tree in dot to stdout.
-
-# Prerequisites
-
-## graphviz
+### graphviz
 
 Install [graphviz](http://www.graphviz.org/Download.php).
 
-## ANTLR4
-
-### ANTLR Tool
-Download [ANTLR jar file](http://www.antlr.org/download.html) to root directory of `BracketNotationToDotConverter`.
-
-### ANTLR Python runtime
-The easiest method is to use pip3. See [package website](https://pypi.python.org/pypi/antlr4-python3-runtime) for details.
-```
-pip3 install antlr4-python3-runtime
-```
-
-# Build Process
-Generate the parser files.
-```bash
-java -jar antlr-4.7-complete.jar -Dlanguage=Python3 BracketNotation.g4
-```
-
-# Execution
+## Execution
 To execute the converter, use the following command:
 ```bash
-python3 bracket-to-dot.py <your tree here>
+python3 format_converters.py <your tree here> bracket-dot
 ```
 To immediately view the dot graph in a viewer use:
 ```bash
-python3 bracket-to-dot.py <your tree here> | dot -Tpng | <your PNG viewer here>
+python3 format_converters.py <your tree here> | dot -Tpng | <your PNG viewer here>
 ```
 For MacOS use `open -f -a /Applications/Preview.app` for `<your PNG viewer here>`.
 
-# Examples
+## Examples
 Example tree in bracket notation:
 ```
 {a{b{d{f}}{e}}{c}}
@@ -61,7 +38,7 @@ and its more natural view:
 ```
 The command:
 ```bash
-python3 bracket-to-dot.py {a{b{d{f}}{e}}{c}}
+python3 format_converters.py {a{b{d{f}}{e}}{c}} bracket-dot
 ```
 results in the following dot output:
 ```dot
