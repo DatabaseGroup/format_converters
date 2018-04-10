@@ -19,7 +19,9 @@ To immediately view the dot graph in a viewer use:
 ```bash
 python3 format_converters.py <your tree here> | dot -Tpng | <your PNG viewer here>
 ```
-For MacOS use `open -f -a /Applications/Preview.app` for `<your PNG viewer here>`.
+On Debian use `display` of ImageMagick for `<your PNG viewer here>`.
+
+On MacOS use `open -f -a /Applications/Preview.app` for `<your PNG viewer here>`.
 
 ## Examples
 Example tree in bracket notation:
