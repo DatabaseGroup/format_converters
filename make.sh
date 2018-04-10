@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # A list of grammars of all converters that will be compiled.
 # NOTE: If parser is separate form lexer, '-lib' option must be provided.
