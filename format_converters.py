@@ -36,15 +36,22 @@ def main(argv):
         description='Format converter of the Database Research Group. \
                      Description can be found in README.md.')
     parser.add_argument(
-        'source',
-        type=str,
-        help='Source string to convert.'
-    )
-    parser.add_argument(
         'conversion_type',
         type=str,
         choices=[_BD, _NB, _XB, _XD],
         help='Conversion type.'
+    )
+    parser.add_argument(
+        '-f',
+        '--file',
+        type=argparse.FileType('r'),
+        help='source file to convert.'
+    )
+    parser.add_argument(
+        '-t',
+        '--tree',
+        type=str,
+        help='source tree to convert.'
     )
     parser.add_argument(
         '--xml-tokanization-type',
@@ -58,17 +65,26 @@ def main(argv):
 
     # BUG: If error in parsing, incorrect partial output is printed.
 
+    if args.tree is None and args.file is None:
+        parser.print_help(sys.stderr)
+        print('error: enter source tree or file to convert')
+        sys.exit()
+    elif args.tree is not None:
+        source = args.tree
+    elif args.file is not None:
+        source = args.file.read()
+
     if args.conversion_type == _BD:
-        print(BDConverter.convert(args.source))
+        print(BDConverter.convert(source))
 
     if args.conversion_type == _NB:
-        print(NBConverter.convert(args.source))
+        print(NBConverter.convert(source))
 
     if args.conversion_type == _XB:
-        print(XBConverter.convert(args.source, args.xml_tokanization_type))
+        print(XBConverter.convert(source, args.xml_tokanization_type))
 
     if args.conversion_type == _XD:
-        print(BDConverter.convert(XBConverter.convert(args.source, args.xml_tokanization_type)))
+        print(BDConverter.convert(XBConverter.convert(source, args.xml_tokanization_type)))
 
 if __name__ == '__main__':
     main(sys.argv)
