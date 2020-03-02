@@ -1,0 +1,22 @@
+<dblp>
+<inproc year="toappear" isbn="1234567890" booktitle="X">
+<author>Daniel Kocher</author>
+<author>Nikolaus Augsten</author>
+<title>Top-k Indexing Technique</title>
+</inproc>
+<inproc year="2013" booktitle="Y" isbn="1234567891">
+<author>Sara Cohen</author>
+<title>Indexing for Subtree Similarity-Search using Edit Distance</title>
+</inproc>
+<inproc isbn="1234567892" year="2010" booktitle="Z">
+<author>Nikolaus Augsten</author>
+<author>Michael H. Boehlen</author>
+<author>Johann Gamper</author>
+<title>Top-k Approximate Subtree Matching</title>
+</inproc>
+</dblp>
+
+<!--
+BRACKET NOTATION:
+{"dblp"{"inproc"{"author"{"Daniel Kocher"}}{"author"{Nikolaus Augsten}}{"title"{Top-k Indexing Technique}}}{"inproc"{"author"{"Sara Cohen"}}{"title"{"Indexing for Subtree Similarity-Search using Edit Distance"}}}{"inproc"{"author"{"Nikolaus Augsten"}}{"author"{"Michael H. Boehlen"}}{"author"{"Johann Gamper"}}{"title"{"Top-k Approximate Subtree Matching"}}}}
+-->
