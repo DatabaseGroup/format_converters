@@ -51,11 +51,12 @@ We've implemented our converters in [Python3](https://www.python.org/). We use [
 #### ANTLR Tool
 Download [ANTLR jar file](http://www.antlr.org/download.html) to the root directory of the format converters.
 ```
-wget http://www.antlr.org/download/antlr-4.7-complete.jar
+wget http://www.antlr.org/download/antlr-4.8-complete.jar
 ```
 
 #### ANTLR Python runtime
 The easiest method is to use pip. See [package website](https://pypi.python.org/pypi/antlr4-python3-runtime) for details.
+Use `pip3` instead of `pip` on Debian.
 ```
 pip install antlr4-python3-runtime
 ```

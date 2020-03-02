@@ -19,7 +19,7 @@ GRAMMARS_TO_COMPILE=(\
 JAVA="java -jar"
 
 # Path to ANTLR4 Jar file.
-ANTLR4_JAR="antlr-4.7-complete.jar"
+ANTLR4_JAR="antlr-4.8-complete.jar"
 
 # Common parameters of ANTLR4.
 ANTLR4_PARAMS="-Dlanguage=Python3"
